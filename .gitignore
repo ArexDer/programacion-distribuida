@@ -1,0 +1,12 @@
+# Project exclude paths
+/.gradle/
+/app-authors/build/
+/app-authors/build/classes/java/main/
+/app-books/build/
+/app-books/build/classes/java/main/
+/ejemplo01-cdi/build/
+/ejemplo01-cdi/build/classes/java/main/
+/ejemplo02_rest/build/
+/ejemplo02_rest/build/classes/java/main/
+/ejemplo03_rest_custom/build/
+/ejemplo03_rest_custom/build/classes/java/main/
