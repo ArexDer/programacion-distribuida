@@ -14,6 +14,6 @@ public class BookAuthor {
 
     @ManyToOne
     @MapsId("authorId")
-    @JoinColumn(name = "authors_id")
+    @JoinColumn(name = "authors_id",nullable = false)
     private Author author;
 }

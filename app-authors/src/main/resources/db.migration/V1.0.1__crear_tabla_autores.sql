@@ -2,7 +2,7 @@ CREATE TABLE public.authors
 (
     id SERIAL,
     name VARCHAR(255),
-    version INTEGER STORAGE PLAIN,
+    version INTEGER,
     CONSTRAINT author_pkey PRIMARY KEY (id)
 );
 
