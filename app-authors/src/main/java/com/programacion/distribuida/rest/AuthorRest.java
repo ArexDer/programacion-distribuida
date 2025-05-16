@@ -8,6 +8,9 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.util.List;
 
@@ -18,6 +21,12 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 @ApplicationScoped
 public class AuthorRest {
+
+    //ESTO ES ID
+    //Lo usamos cuando el componente es CDI
+    @Inject //Si comento esto, ya no seria portable, RECOMENDADO PONERLA.
+    @ConfigProperty(name = "quarkus.http.port", defaultValue = "8080")
+    Integer httpPort;
 
     @Inject
     AuthorRepository authorRepository;
@@ -85,5 +94,29 @@ public class AuthorRest {
 
         authorRepository.delete(author.get());
         return Response.noContent().build();
+    }
+
+    @GET
+    @Path("/find/{isbn}")
+    public List<Author> findByBookIsbn(@PathParam("isbn") String isbn){
+        var ret =authorRepository.findByBook(isbn);
+        /*
+        Otra opcion dep uerto es usar el LOOK-UP
+        Lo usamos cunado el componente no es un CDI,
+        Config config = ConfigProvider.getConfig();
+        var puerto = config.getOptionalValue("quarkus.http.port", Integer.class).orElse(8080);
+
+         */
+        Config config =ConfigProvider.getConfig();
+        config.getConfigSources().forEach(obj -> {
+            System.out.printf("%d -> %s \n", obj.getOrdinal(),obj.getName());
+        });
+
+
+        return ret.stream().map(obj ->{
+            String newName = String.format("%s  (%d)",obj.getName(),httpPort);
+            return obj;
+        }).toList();
+
     }
 }
