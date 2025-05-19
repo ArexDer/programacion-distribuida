@@ -6,7 +6,8 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "books_authors")
-@Getter @Setter
+@Getter
+@Setter
 public class BookAuthor {
 
     @EmbeddedId
