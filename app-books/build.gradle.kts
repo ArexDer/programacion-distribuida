@@ -22,11 +22,18 @@ dependencies {
 
     //REST
     implementation("io.quarkus:quarkus-rest")
-    implementation("io.quarkus:quarkus-jsonb")
+    implementation("io.quarkus:quarkus-rest-jsonb")
+
+    //consumir json
+    implementation("io.quarkus:quarkus-rest-client")
+    implementation("io.quarkus:quarkus-rest-client-jsonb")
+
 
     //JPA
     implementation("io.quarkus:quarkus-hibernate-orm-panache")
     implementation("io.quarkus:quarkus-jdbc-postgresql")
+
+
 }
 
 tasks.withType<JavaCompile> {

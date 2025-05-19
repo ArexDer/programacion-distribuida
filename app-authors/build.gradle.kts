@@ -33,6 +33,8 @@ dependencies {
     implementation("io.quarkus:quarkus-flyway")
     implementation("org.flywaydb:flyway-database-postgresql")
 
+
+
 }
 
 tasks.withType<JavaCompile> {
