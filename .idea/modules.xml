@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app-authors/programacion-distribuida.app-authors.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app-authors/programacion-distribuida.app-authors.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app-books/programacion-distribuida.app-books.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app-books/programacion-distribuida.app-books.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app-bookauthor/programacion-distribuida.app-bookauthor.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app-bookauthor/programacion-distribuida.app-bookauthor.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app-lineitem/programacion-distribuida.app-lineitem.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app-lineitem/programacion-distribuida.app-lineitem.main.iml" />
     </modules>
   </component>
 </project>
