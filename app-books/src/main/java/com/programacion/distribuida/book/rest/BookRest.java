@@ -29,6 +29,7 @@ public class BookRest {
     @GET
     @Path("/{isbn}")
     public Response findByIsbn(@PathParam("isbn") String isbn) {
+
         // 1.- Buscar el libro
         var obj = booksRepository.findByIdOptional(isbn);
 
@@ -58,10 +59,11 @@ public class BookRest {
         //3.-  Devolver la respuesta con el DTO del book
         var client = ClientBuilder.newClient();
         AuthorDto[] authors = client.target("http://localhost:8080")
-                .path("/api/authors/find/{isbn}" + isbn)
+                .path("/api/authors/find/{isbn}")
                 .resolveTemplate("isbn", isbn)
                 .request(MediaType.APPLICATION_JSON)
                 .get(AuthorDto[].class);
+
     //SACAR LA INFORMACION DE AAUI DE MICROPROFILE
         /*
         Metodo buscar todos,
