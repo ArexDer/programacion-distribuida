@@ -24,7 +24,7 @@ dependencies {
     implementation("io.quarkus:quarkus-rest")
     implementation("io.quarkus:quarkus-rest-jsonb")
 
-    //consumir json
+    //consumir json --DEPENDENCICAS DEL CLIENTE
     implementation("io.quarkus:quarkus-rest-client")
     implementation("io.quarkus:quarkus-rest-client-jsonb")
 
@@ -32,6 +32,9 @@ dependencies {
     //JPA
     implementation("io.quarkus:quarkus-hibernate-orm-panache")
     implementation("io.quarkus:quarkus-jdbc-postgresql")
+
+    //para DTOS
+    implementation("org.modelmapper:modelmapper:3.2.3")
 
 
 }
