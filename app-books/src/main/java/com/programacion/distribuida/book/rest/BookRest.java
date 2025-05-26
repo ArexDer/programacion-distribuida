@@ -7,6 +7,10 @@ import com.programacion.distribuida.book.repo.BooksRepository;
 import com.programacion.distribuida.book.service.dto.AuthorDto;
 import com.programacion.distribuida.book.service.dto.BookDto;
 import com.programacion.distribuida.book.service.dto.MapperService;
+import io.smallrye.mutiny.Uni;
+import io.smallrye.stork.Stork;
+import io.smallrye.stork.api.Service;
+import io.smallrye.stork.api.ServiceInstance;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -24,6 +28,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -44,6 +49,9 @@ public class BookRest {
     String authorsUrl;
 
 
+    Stork stork;
+
+
     @Inject
     @RestClient
     private AuthorRestClient clientA;
@@ -59,10 +67,36 @@ public class BookRest {
 
 
 
-    //http://localhost:9090/api/books/find/{isbn}
+    //http://localhost:9090/api/books/{isbn}
     @GET
     @Path("/{isbn}")
     public Response findByIsbn(@PathParam("isbn") String isbn) {
+
+
+        Service service = stork.getService("authors-api");
+        Uni<List<ServiceInstance>> instances= service.getInstances();
+
+
+        Uni<ServiceInstance> instance = service.selectInstance();
+
+        Map<String,Service> services = stork.getServices();
+
+        services.entrySet().stream().forEach(it->{
+            System.out.println(it.getKey() + "---" + it.getValue());
+            var ser = it.getValue();
+
+                    ser.getInstances()
+                            .subscribe()
+                            .with(ls ->{
+                                ls.forEach(inst->{
+                                    System.out.println("++++"+inst.getHost() + " ::"+ inst.getPort());
+                                });
+                            });
+                }
+
+        );
+
+
 
         // 1.- Buscar el libro
         var obj = booksRepository.findByIdOptional(isbn);
@@ -136,6 +170,8 @@ public class BookRest {
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
 
+
+
         // 1.- Buscar todos los libros
         var books = booksRepository.listAll();
 
@@ -195,6 +231,27 @@ public class BookRest {
 
     public List<BookDto> findAll_MICROPROFILE() {
 
+        Service service = stork.getService("authors-api");
+        Uni<List<ServiceInstance>> instances = service.getInstances();
+
+        Map<String, Service> services = stork.getServices();
+
+        services.entrySet().stream()
+                .forEach(it->{
+                    System.out.println(it.getKey()+""+it.getValue());
+
+                    var ser = it.getValue();
+
+                    ser.getInstances()
+                            .subscribe().with(
+                                    ls->{
+                                        ls.forEach(
+                                                inst -> {
+                                                    System.out.println( " " + inst.getHost()+":"+inst.getPort());
+                                                });
+                                    });
+                });
+
         var URL = "http://localhost:8080";
 
         // Crear el cliente REST para los autores
@@ -202,7 +259,7 @@ public class BookRest {
         Haicneod un proxy a AuthorRest del otro modulo
          */
 
-        AuthorRestClient client = RestClientBuilder.newBuilder()
+        clientA = RestClientBuilder.newBuilder()
                 .baseUri(URL)
                 .build(AuthorRestClient.class);
 
@@ -215,7 +272,7 @@ public class BookRest {
                 })
                 .map(book -> {
 
-                    var authors = client.findByIsbn(book.getIsbn())
+                    var authors = clientA.findByIsbn(book.getIsbn())
                             .stream()
                             .map(AuthorDto::getName)
                             .toList();

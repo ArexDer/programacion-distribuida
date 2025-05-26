@@ -11,7 +11,11 @@ import java.util.List;
 @Path("/api/authors")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@RegisterRestClient(configKey = "authors.api")
+//Antes
+//@RegisterRestClient(configKey = "authors.api")
+
+//Despues
+@RegisterRestClient(baseUri = "stork://authors-api")
 /*
 Me permite configurarlo aun mejor el ConfigKey
  */

@@ -36,6 +36,11 @@ dependencies {
     //para DTOS
     implementation("org.modelmapper:modelmapper:3.2.3")
 
+    //SERIVE DISCOVERY
+    implementation("io.quarkus:quarkus-smallrye-stork")
+    implementation("io.smallrye.stork:stork-service-discovery-static-list")
+
+
 
 }
 
