@@ -49,7 +49,7 @@ public class BookRest {
     String authorsUrl;
 
 
-    Stork stork;
+    Stork stork = Stork.getInstance();
 
 
     @Inject
@@ -121,40 +121,17 @@ public class BookRest {
             ret.setSupplier(inventory.getSupplied());
         }
 
-        // Buscar los autores (puedes agregar aquí el código para los autores si es necesario)
-        // ret.setAuthors(book.getAuthors());
-
-        //3.-  Devolver la respuesta con el DTO del book
-
-        var client = ClientBuilder.newClient();
-
-        AuthorDto[] authors = client.target("http://localhost:8080")
-                .path("/api/authors/find/{isbn}")
-                .resolveTemplate("isbn", isbn)
-                .request(MediaType.APPLICATION_JSON)
-                .get(AuthorDto[].class);
-
-    //SACAR LA INFORMACION DE AAUI DE MICROPROFILE
-        /*
-        Metodo buscar todos,
-        buscar todos, iterar de uno en uno
-        recupuerar los autoresy ponerlos alli
-        sino que nos salga varios
-        libro uno...
-        libro 2 ---
-        etc
-         */
 
 
-       // System.out.print(client);
-        ret.setAuthors(
-                Stream.of(authors)
+        var authors = clientA.findByIsbn(isbn)
+                .stream()
                 .map(AuthorDto::getName)
-                        .toList()
-        );
+                .toList();
 
+        ret.setAuthors(authors);
 
-        return Response.ok(ret).build();
+        return Response.ok(ret)
+                .build();
     }
 
     /*
@@ -198,7 +175,7 @@ public class BookRest {
             }
 
             // Autores por REST para cada libro usando su ISBN
-            AuthorDto[] authors = client.target("http://localhost:8080")
+            AuthorDto[] authors = client.target(authorsUrl)
                     .path("/api/authors/find/{isbn}")
                     .resolveTemplate("isbn", book.getIsbn())
                     .request(MediaType.APPLICATION_JSON)
@@ -259,9 +236,12 @@ public class BookRest {
         Haicneod un proxy a AuthorRest del otro modulo
          */
 
+        /*
         clientA = RestClientBuilder.newBuilder()
                 .baseUri(URL)
                 .build(AuthorRestClient.class);
+
+         */
 
         return  booksRepository.streamAll()
                 .map(book -> {

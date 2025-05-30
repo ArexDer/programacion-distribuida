@@ -115,7 +115,9 @@ public class AuthorRest {
 
         return ret.stream().map(obj ->{
             String newName = String.format("%s  (%d)",obj.getName(),httpPort);
+            obj.setName(newName);
             return obj;
+
         }).toList();
 
     }

@@ -16,6 +16,8 @@ import java.util.List;
 
 //Despues
 @RegisterRestClient(baseUri = "stork://authors-api")
+
+//@RegisterRestClient(configKey = "authors-api")
 /*
 Me permite configurarlo aun mejor el ConfigKey
  */
