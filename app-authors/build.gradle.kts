@@ -23,11 +23,18 @@ dependencies {
 
     //REST
     implementation("io.quarkus:quarkus-rest")
-    implementation("io.quarkus:quarkus-jsonb")
+    implementation("io.quarkus:quarkus-rest-jsonb")
 
     //JPA
     implementation("io.quarkus:quarkus-hibernate-orm-panache")
     implementation("io.quarkus:quarkus-jdbc-postgresql")
+
+    //control de versiones DB
+    implementation("io.quarkus:quarkus-flyway")
+    implementation("org.flywaydb:flyway-database-postgresql")
+
+
+
 }
 
 tasks.withType<JavaCompile> {

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 
@@ -14,12 +15,17 @@ import java.util.Set;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(length = 128)
     private String isbn;
 
+    @OneToOne(mappedBy = "book")
+    private Inventory inventory;
+
+    @Column(length = 128)
     private String title;
 
-    private Double price;
+    @Column(precision = 12, scale = 2)
+    private BigDecimal price;
 
     private Integer version;
 }
