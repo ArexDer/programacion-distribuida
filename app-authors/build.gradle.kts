@@ -33,6 +33,10 @@ dependencies {
     implementation("io.quarkus:quarkus-flyway")
     implementation("org.flywaydb:flyway-database-postgresql")
 
+    //service Discovery
+    implementation("io.quarkus:quarkus-smallrye-stork")
+    implementation("io.smallrye.stork:stork-service-discovery-consul")
+    implementation("io.smallrye.reactive:smallrye-mutiny-vertx-consul-client")
 
 
 }
