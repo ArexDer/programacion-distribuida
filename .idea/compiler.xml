@@ -16,8 +16,10 @@
         <module name="programacion-distribuida.app-authors.quarkus-test-generated-sources" />
         <module name="programacion-distribuida.app-lineitem.test" />
         <module name="programacion-distribuida.app-bookauthor.main" />
+        <module name="programacion-distribuida.app-customers.quarkus-generated-sources" />
         <module name="programacion-distribuida.app-lineitem.main" />
         <module name="programacion-distribuida.app-bookauthor.test" />
+        <module name="programacion-distribuida.app-customers.quarkus-test-generated-sources" />
         <module name="programacion-distribuida.app-lineitem.quarkus-generated-sources" />
         <module name="programacion-distribuida.app-authors.main" />
         <module name="programacion-distribuida.app-bookauthor.integrationTest" />
@@ -27,6 +29,7 @@
         <module name="programacion-distribuida.app-purchaseorder.quarkus-test-generated-sources" />
         <module name="programacion-distribuida.ejemplo03_rest_custom.test" />
         <module name="programacion-distribuida.app-books.main" />
+        <module name="programacion-distribuida.app-customers.main" />
         <module name="programacion-distribuida.app-bookauthor.quarkus-test-generated-sources" />
         <module name="programacion-distribuida.app-authors.integrationTest" />
         <module name="programacion-distribuida.app-bookauthor.native-test" />
@@ -38,7 +41,10 @@
         <module name="programacion-distribuida.app-books.quarkus-generated-sources" />
         <module name="programacion-distribuida.app-authors.native-test" />
         <module name="programacion-distribuida.app-books.quarkus-test-generated-sources" />
+        <module name="programacion-distribuida.app-customers.integrationTest" />
+        <module name="programacion-distribuida.app-customers.test" />
         <module name="programacion-distribuida.app-purchaseorder.quarkus-generated-sources" />
+        <module name="programacion-distribuida.app-customers.native-test" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17" />

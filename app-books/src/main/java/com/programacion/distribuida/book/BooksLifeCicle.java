@@ -1,0 +1,81 @@
+package com.programacion.distribuida.book;
+
+
+
+import io.quarkus.runtime.ShutdownEvent;
+import io.quarkus.runtime.StartupEvent;
+import io.vertx.ext.consul.ConsulClientOptions;
+import io.vertx.ext.consul.ServiceOptions;
+import io.vertx.mutiny.core.Vertx;
+import io.vertx.mutiny.ext.consul.ConsulClient;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.UUID;
+
+@ApplicationScoped
+public class BooksLifeCicle {
+
+
+    //recuperacion de INFORMACION DE
+    @Inject
+    @ConfigProperty(name = "consul.host", defaultValue = "127.0.0.1")
+    String consulHost;
+
+    @Inject
+    @ConfigProperty(name = "consul.port", defaultValue = "8500")
+    Integer consulPort;
+
+    @Inject
+    @ConfigProperty(name = "quarkus.http.port")
+    Integer appPort;
+
+    String serviceId;
+
+    /*
+    vamos a hacer dos eventos UNA cuando arranque: SE CREA EL REGISTRO
+    se cierra: SE BORRA EL REGISTRO
+     */
+    void init(@Observes StartupEvent event, Vertx vertx) throws UnknownHostException {
+
+        ConsulClientOptions options = new ConsulClientOptions()
+                .setHost(consulHost)
+                .setPort(consulPort);
+        ConsulClient consulClientclient = ConsulClient.create(vertx, options);
+
+        //cade de 64 caracteres UNICA
+        serviceId = UUID.randomUUID().toString();
+
+        //sacamos la IP
+        var ipAddress = InetAddress.getLocalHost();
+
+        //sacamos el puerto dodne esta corriendo
+
+        //----REGISTRAMOS
+        ServiceOptions serviceOptions = new ServiceOptions()
+                .setName("app-books")
+                .setId(serviceId)
+                .setAddress(ipAddress.getHostAddress())
+                .setPort(appPort);
+        consulClientclient.registerServiceAndAwait(serviceOptions);
+
+    }
+    void stop(@Observes ShutdownEvent event, Vertx vertx){
+        System.out.println("Shutting down LAS  INSTANCIAS");
+        ConsulClientOptions options = new ConsulClientOptions()
+                .setHost(consulHost)
+                .setPort(consulPort);
+
+        ConsulClient consulClient = ConsulClient.create(vertx,options);
+        consulClient.deregisterServiceAndAwait(serviceId);
+
+
+
+    }
+
+
+}
