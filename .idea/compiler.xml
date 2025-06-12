@@ -7,35 +7,20 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.36/5a30490a6e14977d97d9c73c924c1f1b5311ea95/lombok-1.18.36.jar" />
         </processorPath>
-        <module name="programacion-distribuida.ejemplo03_rest_custom.main" />
-        <module name="programacion-distribuida.app-purchaseorder.test" />
+        <module name="programacion-distribuida.app-bookauthor.quarkus-test-generated-sources" />
+        <module name="programacion-distribuida.app-authors.integrationTest" />
         <module name="programacion-distribuida.app-bookauthor.quarkus-generated-sources" />
         <module name="programacion-distribuida.app-authors.test" />
+        <module name="programacion-distribuida.app-bookauthor.native-test" />
         <module name="programacion-distribuida.app-authors.quarkus-generated-sources" />
         <module name="programacion-distribuida.app-books.integrationTest" />
         <module name="programacion-distribuida.app-authors.quarkus-test-generated-sources" />
-        <module name="programacion-distribuida.app-lineitem.test" />
         <module name="programacion-distribuida.app-bookauthor.main" />
         <module name="programacion-distribuida.app-customers.quarkus-generated-sources" />
-        <module name="programacion-distribuida.app-lineitem.main" />
         <module name="programacion-distribuida.app-bookauthor.test" />
         <module name="programacion-distribuida.app-customers.quarkus-test-generated-sources" />
-        <module name="programacion-distribuida.app-lineitem.quarkus-generated-sources" />
         <module name="programacion-distribuida.app-authors.main" />
         <module name="programacion-distribuida.app-bookauthor.integrationTest" />
-        <module name="programacion-distribuida.app-lineitem.native-test" />
-        <module name="programacion-distribuida.app-lineitem.quarkus-test-generated-sources" />
-        <module name="programacion-distribuida.app-purchaseorder.main" />
-        <module name="programacion-distribuida.app-purchaseorder.quarkus-test-generated-sources" />
-        <module name="programacion-distribuida.ejemplo03_rest_custom.test" />
-        <module name="programacion-distribuida.app-books.main" />
-        <module name="programacion-distribuida.app-customers.main" />
-        <module name="programacion-distribuida.app-bookauthor.quarkus-test-generated-sources" />
-        <module name="programacion-distribuida.app-authors.integrationTest" />
-        <module name="programacion-distribuida.app-bookauthor.native-test" />
-        <module name="programacion-distribuida.app-purchaseorder.native-test" />
-        <module name="programacion-distribuida.app-purchaseorder.integrationTest" />
-        <module name="programacion-distribuida.app-lineitem.integrationTest" />
         <module name="programacion-distribuida.app-books.native-test" />
         <module name="programacion-distribuida.app-books.test" />
         <module name="programacion-distribuida.app-books.quarkus-generated-sources" />
@@ -43,7 +28,8 @@
         <module name="programacion-distribuida.app-books.quarkus-test-generated-sources" />
         <module name="programacion-distribuida.app-customers.integrationTest" />
         <module name="programacion-distribuida.app-customers.test" />
-        <module name="programacion-distribuida.app-purchaseorder.quarkus-generated-sources" />
+        <module name="programacion-distribuida.app-books.main" />
+        <module name="programacion-distribuida.app-customers.main" />
         <module name="programacion-distribuida.app-customers.native-test" />
       </profile>
     </annotationProcessing>
