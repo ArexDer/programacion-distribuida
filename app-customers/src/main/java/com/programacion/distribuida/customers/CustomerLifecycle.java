@@ -1,6 +1,4 @@
-package com.programacion.distribuida.book;
-
-
+package com.programacion.distribuida.customers;
 
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
@@ -15,15 +13,12 @@ import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
-public class BooksLifeCicle {
+public class CustomerLifecycle {
 
-
-    //recuperacion de INFORMACION DE
     @Inject
     @ConfigProperty(name = "consul.host", defaultValue = "127.0.0.1")
     String consulHost;
@@ -38,62 +33,54 @@ public class BooksLifeCicle {
 
     String serviceId;
 
-    /*
-    vamos a hacer dos eventos UNA cuando arranque: SE CREA EL REGISTRO
-    se cierra: SE BORRA EL REGISTRO
-     */
-    void init(@Observes StartupEvent event, Vertx vertx) throws UnknownHostException {
+    void init(@Observes StartupEvent event, Vertx vertx) throws Exception {
+        System.out.println("Starting Customer service...");
 
         ConsulClientOptions options = new ConsulClientOptions()
                 .setHost(consulHost)
                 .setPort(consulPort);
-        ConsulClient consulClientclient = ConsulClient.create(vertx, options);
 
-        //cade de 64 caracteres UNICA
+        ConsulClient consulClient = ConsulClient.create(vertx, options);
+
         serviceId = UUID.randomUUID().toString();
-
-        //sacamos la IP
         var ipAddress = InetAddress.getLocalHost();
 
-        //sacamos el puerto dodne esta corriendo
+        //--registro
 
-        //----REGISTRAMOS
         var tags = List.of(
                 "traefik.enable=true",
-                "traefik.http.routers.app-books.rule=PathPrefix(`/app-books`)",
-                "traefik.http.routers.app-books.middlewares=strip-prefix-books",
-                "traefik.http.middlewares.strip-prefix-books.stripPrefix.prefixes=/app-books"
+                "traefik.http.routers.app-customers.rule=PathPrefix(`/app-customers`)",
+                "traefik.http.routers.app-customers.middlewares=strip-prefix-customers",
+                "traefik.http.middlewares.strip-prefix-customers.stripPrefix.prefixes=/app-customers"
         );
 
         var checkOptions = new CheckOptions()
+
                 //.setHttp("http://127.0.0.1:8080/ping")
+
                 .setHttp(String.format("http://%s:%s/api/ping",ipAddress.getHostAddress(),appPort))
                 .setInterval("10s")
                 .setDeregisterAfter("20s");
-
-
         ServiceOptions serviceOptions = new ServiceOptions()
-                .setName("app-books")
+                .setName("app-customers")
                 .setId(serviceId)
                 .setAddress(ipAddress.getHostAddress())
-                .setPort(appPort)   // -----tags
+                .setPort(appPort)// -----tags
                 .setTags(tags)
                 .setCheckOptions(checkOptions);
-        consulClientclient.registerServiceAndAwait(serviceOptions);
 
+        consulClient.registerServiceAndAwait(serviceOptions);
     }
-    void stop(@Observes ShutdownEvent event, Vertx vertx){
-        System.out.println("Shutting down LAS  INSTANCIAS");
+
+    void stop(@Observes ShutdownEvent event, Vertx vertx) {
+        System.out.println("Stopping Customer service...");
+
         ConsulClientOptions options = new ConsulClientOptions()
                 .setHost(consulHost)
                 .setPort(consulPort);
+        ConsulClient consulClient = ConsulClient.create(vertx, options);
 
-        ConsulClient consulClient = ConsulClient.create(vertx,options);
         consulClient.deregisterServiceAndAwait(serviceId);
 
-
-
     }
-
-
 }

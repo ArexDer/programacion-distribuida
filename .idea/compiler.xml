@@ -33,10 +33,25 @@
         <module name="programacion-distribuida.app-customers.native-test" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="17" />
+    <bytecodeTargetLevel target="17">
+      <module name="app-customers" target="21" />
+      <module name="app-customers.integrationTest" target="21" />
+      <module name="app-customers.main" target="21" />
+      <module name="app-customers.native-test" target="21" />
+      <module name="app-customers.quarkus-generated-sources" target="21" />
+      <module name="app-customers.quarkus-test-generated-sources" target="21" />
+      <module name="app-customers.test" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="app-customers" options="-Xlint:-processing -parameters" />
+      <module name="app-customers.integrationTest" options="-Xlint:-processing -parameters" />
+      <module name="app-customers.main" options="-Xlint:-processing -parameters" />
+      <module name="app-customers.native-test" options="-Xlint:-processing -parameters" />
+      <module name="app-customers.quarkus-generated-sources" options="-Xlint:-processing -parameters" />
+      <module name="app-customers.quarkus-test-generated-sources" options="-Xlint:-processing -parameters" />
+      <module name="app-customers.test" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-authors" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-authors.integrationTest" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-authors.main" options="-Xlint:-processing -parameters" />
@@ -58,31 +73,31 @@
       <module name="programacion-distribuida.app-books.quarkus-generated-sources" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-books.quarkus-test-generated-sources" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-books.test" options="-Xlint:-processing -parameters" />
+      <module name="programacion-distribuida.app-customers" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-customers.integrationTest" options="-Xlint:-processing -parameters" />
+      <module name="programacion-distribuida.app-customers.main" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-customers.native-test" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-customers.quarkus-generated-sources" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-customers.quarkus-test-generated-sources" options="-Xlint:-processing -parameters" />
+      <module name="programacion-distribuida.app-customers.test" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-inventory.integrationTest" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-inventory.main" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-inventory.native-test" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-inventory.quarkus-generated-sources" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-inventory.quarkus-test-generated-sources" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-inventory.test" options="-Xlint:-processing -parameters" />
-      <module name="programacion-distribuida.app-lineitem" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-lineitem.integrationTest" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-lineitem.main" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-lineitem.native-test" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-lineitem.quarkus-generated-sources" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-lineitem.quarkus-test-generated-sources" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-lineitem.test" options="-Xlint:-processing -parameters" />
-      <module name="programacion-distribuida.app-purchaseorder" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-purchaseorder.integrationTest" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-purchaseorder.main" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-purchaseorder.native-test" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-purchaseorder.quarkus-generated-sources" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-purchaseorder.quarkus-test-generated-sources" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-purchaseorder.test" options="-Xlint:-processing -parameters" />
-      <module name="programacion-distribuida.ejemplo03_rest_custom" options="-Xlint:-processing" />
       <module name="programacion-distribuida.ejemplo03_rest_custom.main" options="-Xlint:-processing" />
       <module name="programacion-distribuida.ejemplo03_rest_custom.test" options="-Xlint:-processing" />
     </option>

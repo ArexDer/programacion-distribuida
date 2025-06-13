@@ -14,12 +14,6 @@
             <option value="$PROJECT_DIR$/app-bookauthor" />
             <option value="$PROJECT_DIR$/app-books" />
             <option value="$PROJECT_DIR$/app-customers" />
-            <option value="$PROJECT_DIR$/app-inventory" />
-            <option value="$PROJECT_DIR$/app-lineitem" />
-            <option value="$PROJECT_DIR$/app-purchaseorder" />
-            <option value="$PROJECT_DIR$/ejemplo01-cdi" />
-            <option value="$PROJECT_DIR$/ejemplo02_rest" />
-            <option value="$PROJECT_DIR$/ejemplo03_rest_custom" />
           </set>
         </option>
       </GradleProjectSettings>
