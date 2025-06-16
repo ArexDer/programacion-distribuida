@@ -14,7 +14,7 @@
 --- ----
 
 3.- CORREMOS LOS APLICATIVOS AUTHORS
-        java -Dquarkus.http.port=8080 -jar app-authors/build/quarkus-app/quarkus-run.jar
+        java -Dquarkus.http.port=7070 -jar app-authors/build/quarkus-app/quarkus-run.jar
         java -Dquarkus.http.port=8081 -jar app-authors/build/quarkus-app/quarkus-run.jar
 
 4.- CORREMOS LOS APLICATIVOS BOOKS

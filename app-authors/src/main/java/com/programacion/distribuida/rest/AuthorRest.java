@@ -49,6 +49,13 @@ public class AuthorRest {
     // http://localhost:8080/api/authors
     @GET
     public List<Author> findAll() {
+        int valor = index.getAndIncrement();
+        if (valor % 5 != 0) {
+            String msg = String.format("Intento %d , generando error", valor);
+            System.out.println("authors ****** |||| ******* " + msg);
+            throw new RuntimeException(msg);
+        }
+
         return authorRepository.listAll();
     }
 
