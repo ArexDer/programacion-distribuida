@@ -38,10 +38,14 @@ public class BooksLifeCicle {
 
     String serviceId;
 
+    @Inject
+    Vertx vertx;
+
     /*
     vamos a hacer dos eventos UNA cuando arranque: SE CREA EL REGISTRO
     se cierra: SE BORRA EL REGISTRO
      */
+
     void init(@Observes StartupEvent event, Vertx vertx) throws UnknownHostException {
 
         ConsulClientOptions options = new ConsulClientOptions()
@@ -79,21 +83,18 @@ public class BooksLifeCicle {
                 .setPort(appPort)   // -----tags
                 .setTags(tags)
                 .setCheckOptions(checkOptions);
+
         consulClientclient.registerServiceAndAwait(serviceOptions);
 
     }
-    void stop(@Observes ShutdownEvent event, Vertx vertx){
+    void stop(@Observes ShutdownEvent event){
         System.out.println("Shutting down LAS  INSTANCIAS");
         ConsulClientOptions options = new ConsulClientOptions()
                 .setHost(consulHost)
                 .setPort(consulPort);
-
         ConsulClient consulClient = ConsulClient.create(vertx,options);
         consulClient.deregisterServiceAndAwait(serviceId);
 
-
-
     }
-
 
 }

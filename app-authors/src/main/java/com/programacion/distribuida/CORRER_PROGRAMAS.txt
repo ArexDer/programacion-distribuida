@@ -1,8 +1,11 @@
 1.- CORREMOS EL CONSUL
         C:\Distribuida2025-2025>consul agent -dev
 
+        localhost:8500
+
 2.- CORREMOS EL TRAEFIK
         C:\Distribuida2025-2025>trefik
+        localhost:8888
 
 
 ---cambiamos  en el CMD:

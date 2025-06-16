@@ -115,11 +115,12 @@ public class BookRest {
                     mapper.map(book, dto);
                     return dto;
                 })
-                .map(book -> {
+                .map(book -> { //AQUI  se conecta con el app-authors
                     var authors = client.findByIsbn(book.getIsbn())
                             .stream()
                             .map(AuthorDto::getName)
                             .toList();
+
                     book.setAuthors(authors);
                     return book;
                 })

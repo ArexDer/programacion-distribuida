@@ -45,6 +45,8 @@ dependencies {
     implementation("io.smallrye.reactive:smallrye-mutiny-vertx-consul-client")
 
 
+    // LIBRERIA DE TOLERANCIA A FALLOS
+    implementation("io.quarkus:quarkus-smallrye-fault-tolerance")
 
 }
 
