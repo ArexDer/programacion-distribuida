@@ -20,6 +20,10 @@ FROM eclipse-temurin:21.0.7_6-jre-noble
 RUN mkdir /app
 WORKDIR /app
 
+
+RUN apt update
+RUN apt install -y iputils-ping
+
 #IDIOMA
 ENV LANGUAGE='en_US:en'
 
