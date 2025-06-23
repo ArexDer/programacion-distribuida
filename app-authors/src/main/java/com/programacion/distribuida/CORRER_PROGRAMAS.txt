@@ -1,0 +1,28 @@
+1.- CORREMOS EL CONSUL
+        C:\Distribuida2025-2025>consul agent -dev
+
+        localhost:8500
+
+2.- CORREMOS EL TRAEFIK
+        C:\Distribuida2025-2025>trefik
+        localhost:8888
+
+
+---cambiamos  en el CMD:
+    cd C:\Users\fing.labcom\Documents\PRACTICAS\CODIGO_GIT\programacion-distribuida
+
+--- ----
+
+3.- CORREMOS LOS APLICATIVOS AUTHORS
+        java -Dquarkus.http.port=7070 -jar app-authors/build/quarkus-app/quarkus-run.jar
+        java -Dquarkus.http.port=7072 -jar app-authors/build/quarkus-app/quarkus-run.jar
+
+4.- CORREMOS LOS APLICATIVOS BOOKS
+
+        java -Dquarkus.http.port=6064 -jar app-books/build/quarkus-app/quarkus-run.jar
+        java -Dquarkus.http.port=9091 -jar app-books/build/quarkus-app/quarkus-run.jar
+
+5.- CORREMOS LOS APLICATIVOS CUSTOMERS
+
+        java -Dquarkus.http.port=7070 -jar app-customers/build/quarkus-app/quarkus-run.jar
+        java -Dquarkus.http.port=7071 -jar app-customers/build/quarkus-app/quarkus-run.jar
