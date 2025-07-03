@@ -40,6 +40,10 @@ dependencies {
     implementation("io.quarkus:quarkus-smallrye-stork")
     implementation("io.smallrye.stork:stork-service-discovery-consul")
     implementation("io.smallrye.reactive:smallrye-mutiny-vertx-consul-client")
+
+    //Telemetria metricas
+    implementation("io.quarkus:quarkus-micrometer-registry-prometheus")
+    implementation("io.quarkus:quarkus-jackson")
 }
 
 tasks.withType<JavaCompile> {
