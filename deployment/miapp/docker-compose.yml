@@ -58,12 +58,14 @@ services:
     #ports:
       #- "6969:8080"  #    HOST : CONTAINER
     deploy:
-      replicas: 2
+      replicas: 3
+    expose:
+        - 8080
     depends_on:
       - dbserver
       - consul
-      - proxy
-      - prometheus
+      #- proxy
+      #- prometheus
   books:
     image: diegorivash/app-books:latest
     environment:
