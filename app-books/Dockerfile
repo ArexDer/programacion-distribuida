@@ -11,7 +11,7 @@
 
 #docker build -t diegorivash/app-books .
 #docker login
-# docker push diegorivash/app-books
+#docker push diegorivash/app-books
 
 
 FROM eclipse-temurin:21.0.7_6-jre-noble

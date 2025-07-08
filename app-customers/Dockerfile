@@ -11,7 +11,7 @@
 
 #docker build -t diegorivash/app-customers .
 #docker login
-# docker push diegorivash/app-customers
+#docker push diegorivash/app-customers
 
 
 FROM eclipse-temurin:21.0.7_6-jre-noble

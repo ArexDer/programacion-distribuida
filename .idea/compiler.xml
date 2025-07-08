@@ -38,7 +38,6 @@
       <module name="programacion-distribuida.app-authors.quarkus-generated-sources" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-authors.quarkus-test-generated-sources" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-authors.test" options="-Xlint:-processing -parameters" />
-      <module name="programacion-distribuida.app-bookauthor" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-bookauthor.integrationTest" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-bookauthor.main" options="-Xlint:-processing -parameters" />
       <module name="programacion-distribuida.app-bookauthor.native-test" options="-Xlint:-processing -parameters" />

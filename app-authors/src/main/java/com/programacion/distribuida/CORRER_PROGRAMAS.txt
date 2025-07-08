@@ -7,6 +7,11 @@
         C:\Distribuida2025-2025>trefik
         localhost:8888
 
+    CORREMOS GRAFANA
+    http://localhost:3000/login
+    usuario: admin
+    password: admin
+
 
 ---cambiamos  en el CMD:
     cd C:\Users\fing.labcom\Documents\PRACTICAS\CODIGO_GIT\programacion-distribuida

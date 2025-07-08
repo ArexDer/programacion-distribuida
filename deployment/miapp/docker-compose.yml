@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.8'
 
 services:
   dbserver:
@@ -9,11 +9,11 @@ services:
       POSTGRES_DB: distribuidaF
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      - "c:/db-distribuida:/var/lib/postgresql/data"  # Cuidado: asegúrate de que esta ruta funcione en Windows
+      - "c:/db-distribuida:/var/lib/postgresql/data"
     ports:
-      - "5433:5432"  # Máquina host:Contenedor
-    expose:
-      - "5432"       # No es necesario si ya usas `ports`, pero no está mal
+      - "5433:5432"
+    networks:
+      - app-network
 
   consul:
     image: consul:1.15.4
@@ -23,9 +23,10 @@ services:
       -bind 0.0.0.0
       -client 0.0.0.0
     ports:
-      - "8500:8500"          # Expose Consul UI port
-    expose:
-      - 8500
+      - "8500:8500"
+    networks:
+      - app-network
+
   proxy:
     image: traefik:3.4.1
     command:
@@ -35,16 +36,18 @@ services:
       --providers.consulCatalog.endpoint.address=consul:8500
       --providers.consulCatalog.refreshInterval=10s
       --providers.consulCatalog.exposedByDefault=false
-      
       --entryPoints.http.address=":80"
       --entryPoints.metrics.address=":8082"
       --metrics.prometheus=true
       --metrics.prometheus.entryPoint=metrics
     ports:
-      - "8888:8080"  # Dashboard, si lo expones manualmente
-      - "80:80"    # HTTP entrypoint
+      - "8888:8080"
+      - "80:80"
+      - "8082:8082"  # Puerto para métricas de Prometheus
     depends_on:
       - consul
+    networks:
+      - app-network
 
   authors:
     image: diegorivash/app-authors:latest
@@ -55,17 +58,15 @@ services:
       QUARKUS_HTTP_PORT: 8080
       CONSUL_HOST: consul
       CONSUL_PORT: 8500
-    #ports:
-      #- "6969:8080"  #    HOST : CONTAINER
     deploy:
       replicas: 3
-    expose:
-        - 8080
+
     depends_on:
       - dbserver
       - consul
-      #- proxy
-      #- prometheus
+    networks:
+      - app-network
+
   books:
     image: diegorivash/app-books:latest
     environment:
@@ -75,14 +76,13 @@ services:
       QUARKUS_HTTP_PORT: 8080
       CONSUL_HOST: consul
       CONSUL_PORT: 8500
-      #AUTHORS_URL: http://authors:8080   SI QUIERO QUE SEA ESTATICO
     ports:
-      - "6060:8080"  #   HOST : CONTAINER
-    expose:
-      - 8080
+      - "6060:8080"
     depends_on:
       - dbserver
       - consul
+    networks:
+      - app-network
 
   customers:
     image: diegorivash/app-customers:latest
@@ -93,27 +93,43 @@ services:
       QUARKUS_HTTP_PORT: 8080
       CONSUL_HOST: consul
       CONSUL_PORT: 8500
-      #AUTHORS_URL: http://authors:8080   SI QUIERO QUE SEA ESTATICO
     ports:
-      - "5050:8080"  #   HOST : CONTAINER
-    expose:
-      - 8080
+      - "5050:8080"
     depends_on:
       - dbserver
       - consul
+    networks:
+      - app-network
 
   prometheus:
     image: prom/prometheus:latest
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
     volumes:
-      - "./config/etc:/prometheus"
+      - "./config/etc/prometheus.yml:/etc/prometheus/prometheus.yml"
     ports:
-      - "9092:9090"  #host , el segundo el contendor
-    expose:
-      - 9090
+      - "4000:9090"
+    depends_on:
+      - authors
+      - books
+      - customers
+      - proxy
+    networks:
+      - app-network
+
   grafana:
     image: grafana/grafana:latest
     ports:
-      - "3000:3000"  # Expose Grafana UI
-    expose:
-      - 3000
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - app-network
 
+networks:
+  app-network:
+    driver: bridge
