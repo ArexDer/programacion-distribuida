@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DiffGenerationConfig">
+    <option name="sourceDbValue" value="c6c41231-5a88-4403-992f-bd749f9ad17f" />
+    <option name="sourceDiffType" value="DB" />
     <option name="sourceModelValue" value="programacion-distribuida.app-authors.main:programacion-distribuida.app-authors.main" />
-    <option name="targetDbValue" value="f37971e5-181f-4956-8ab1-49ee9df8931b" />
+    <option name="targetDbValue" value="c6c41231-5a88-4403-992f-bd749f9ad17f" />
   </component>
 </project>
