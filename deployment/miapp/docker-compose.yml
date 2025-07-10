@@ -58,9 +58,9 @@ services:
       QUARKUS_HTTP_PORT: 8080
       CONSUL_HOST: consul
       CONSUL_PORT: 8500
-    deploy:
-      replicas: 3
-
+      QUARKUS_SMALLRYE_HEALTH_UI_ENABLE: true
+    ports:
+      - "7070:8080"  # Agregar este mapeo
     depends_on:
       - dbserver
       - consul
@@ -76,6 +76,7 @@ services:
       QUARKUS_HTTP_PORT: 8080
       CONSUL_HOST: consul
       CONSUL_PORT: 8500
+      QUARKUS_SMALLRYE_HEALTH_UI_ENABLE: true
     ports:
       - "6060:8080"
     depends_on:
@@ -93,6 +94,7 @@ services:
       QUARKUS_HTTP_PORT: 8080
       CONSUL_HOST: consul
       CONSUL_PORT: 8500
+      QUARKUS_SMALLRYE_HEALTH_UI_ENABLE: true
     ports:
       - "5050:8080"
     depends_on:

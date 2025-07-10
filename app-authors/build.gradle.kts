@@ -42,6 +42,9 @@ dependencies {
     implementation("io.quarkus:quarkus-micrometer-registry-prometheus")
     implementation("io.quarkus:quarkus-jackson")
 
+    //--------TAREA: AÑADIR HEALTH
+    implementation("io.quarkus:quarkus-smallrye-health")
+
 
 }
 
