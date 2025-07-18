@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @ApplicationScoped
+
 public class AuthorRest {
 
     @Inject
@@ -50,12 +51,6 @@ public class AuthorRest {
     @GET
     public List<Author> findAll() {
         int valor = index.getAndIncrement();
-        if (valor % 5 != 0) {
-            String msg = String.format("Intento %d , generando error", valor);
-            System.out.println("authors ****** |||| ******* " + msg);
-            throw new RuntimeException(msg);
-        }
-
         return authorRepository.listAll();
     }
 
@@ -69,11 +64,6 @@ public class AuthorRest {
 
         //generar errores
         int valor = index.getAndIncrement();
-        if (valor % 5 != 0) {
-            String msg = String.format("Intento %d , generando error", valor);
-            System.out.println("authors ****** |||| ******* " + msg);
-            throw new RuntimeException(msg);
-        }
 
         Config config = ConfigProvider.getConfig();
         config.getConfigSources()
