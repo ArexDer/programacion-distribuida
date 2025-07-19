@@ -1,6 +1,5 @@
 package com.programacion.distribuida.book.rest;
 
-
 import com.programacion.distribuida.book.clients.AuthorRestClient;
 import com.programacion.distribuida.book.db.Book;
 import com.programacion.distribuida.book.repo.BooksRepository;
@@ -30,13 +29,13 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
+
 @Path("/books")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @ApplicationScoped
 @Transactional
 public class BookRest {
-
 
     @Inject
     BooksRepository booksRepository;
@@ -48,8 +47,7 @@ public class BookRest {
     @RestClient
     private AuthorRestClient client;
 
-
-    //http://localhost:9090/api/books/{isbn}
+    //GET - Buscar por ISBN
     @GET
     @Path("/{isbn}")
     public Response findByIsbn(@PathParam("isbn") String isbn) {
@@ -83,7 +81,6 @@ public class BookRest {
                     System.out.println("**Instancia seleccionada: " + inst.getHost() + ":" + inst.getPort());
                 });
 
-
         BookDto ret = new BookDto();
 
         //1. buscar el libro
@@ -105,17 +102,17 @@ public class BookRest {
                 .build();
     }
 
-    //http://localhost:9090/api/books/list
+    //GET - Listar todos los libros
+    // http://localhost:8080/api/books
     @GET
     public List<BookDto> findAll() {
-
         return booksRepository.streamAll()
                 .map(book -> {
                     var dto = new BookDto();
                     mapper.map(book, dto);
                     return dto;
                 })
-                .map(book -> { //AQUI  se conecta con el app-authors
+                .map(book -> { //AQUI se conecta con el app-authors
                     var authors = client.findByIsbn(book.getIsbn())
                             .stream()
                             .map(AuthorDto::getName)
@@ -127,14 +124,37 @@ public class BookRest {
                 .toList();
     }
 
+    //POST - Crear nuevo libro
     @POST
-    public void insert(Book book) {
+    public Response insert(Book book) {
         booksRepository.persist(book);
+        return Response.status(Response.Status.CREATED).build();
     }
 
+    //PUT - Actualizar libro existente
     @PUT
     @Path("/{isbn}")
-    public void update(@PathParam("isbn") String isbn, Book book) {
-        booksRepository.update(isbn, book);
+    public Response update(@PathParam("isbn") String isbn, Book book) {
+        var existingBook = booksRepository.findByIdOptional(isbn);
+        if (existingBook.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        book.setIsbn(isbn);
+        booksRepository.getEntityManager().merge(book);
+        return Response.ok().build();
+    }
+
+    //DELETE - Eliminar libro
+    @DELETE
+    @Path("/{isbn}")
+    public Response delete(@PathParam("isbn") String isbn) {
+        var book = booksRepository.findByIdOptional(isbn);
+        if (book.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        booksRepository.deleteById(isbn);
+        return Response.noContent().build();
     }
 }

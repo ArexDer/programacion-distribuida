@@ -81,4 +81,54 @@ public class AuthorRest {
                     return obj;
                 }).toList();
     }
+
+
+    @POST
+    // http://localhost:8080/api/authors
+    @Transactional
+    public Response create(Author author) {
+        try {
+            authorRepository.persist(author);
+            return Response.status(Response.Status.CREATED).entity(author).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.CONFLICT).build();
+        }
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Transactional
+    public Response update(@PathParam("id") Integer id, Author author) {
+        var existingAuthor = authorRepository.findByIdOptional(id);
+
+        if (existingAuthor.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        try {
+            author.setId(id);
+            authorRepository.getEntityManager().merge(author);
+            return Response.ok(author).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.CONFLICT).build();
+        }
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Transactional
+    public Response delete(@PathParam("id") Integer id) {
+        var author = authorRepository.findByIdOptional(id);
+
+        if (author.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        try {
+            authorRepository.delete(author.get());
+            return Response.status(Response.Status.NO_CONTENT).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.CONFLICT).build();
+        }
+    }
 }

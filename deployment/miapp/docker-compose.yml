@@ -59,8 +59,15 @@ services:
       CONSUL_HOST: consul
       CONSUL_PORT: 8500
       QUARKUS_SMALLRYE_HEALTH_UI_ENABLE: true
+      QUARKUS_FLYWAY_VALIDATE_ON_MIGRATE: false
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app-authors.rule=PathPrefix(`/app-authors`)"
+      - "traefik.http.routers.app-authors.middlewares=strip-prefix-authors"
+      - "traefik.http.middlewares.strip-prefix-authors.stripPrefix.prefixes=/app-authors"
+      - "traefik.http.services.app-authors.loadbalancer.server.port=8080"
     ports:
-      - "7070:8080"  # Agregar este mapeo
+      - "7070:8080"
     depends_on:
       - dbserver
       - consul
@@ -77,6 +84,13 @@ services:
       CONSUL_HOST: consul
       CONSUL_PORT: 8500
       QUARKUS_SMALLRYE_HEALTH_UI_ENABLE: true
+      QUARKUS_FLYWAY_VALIDATE_ON_MIGRATE: false
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app-books.rule=PathPrefix(`/app-books`)"
+      - "traefik.http.routers.app-books.middlewares=strip-prefix-books"
+      - "traefik.http.middlewares.strip-prefix-books.stripPrefix.prefixes=/app-books"
+      - "traefik.http.services.app-books.loadbalancer.server.port=8080"
     ports:
       - "6060:8080"
     depends_on:
@@ -95,6 +109,13 @@ services:
       CONSUL_HOST: consul
       CONSUL_PORT: 8500
       QUARKUS_SMALLRYE_HEALTH_UI_ENABLE: true
+      QUARKUS_FLYWAY_VALIDATE_ON_MIGRATE: false
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app-customers.rule=PathPrefix(`/app-customers`)"
+      - "traefik.http.routers.app-customers.middlewares=strip-prefix-customers"
+      - "traefik.http.middlewares.strip-prefix-customers.stripPrefix.prefixes=/app-customers"
+      - "traefik.http.services.app-customers.loadbalancer.server.port=8080"
     ports:
       - "5050:8080"
     depends_on:

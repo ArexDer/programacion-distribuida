@@ -12,8 +12,7 @@ import lombok.NoArgsConstructor;
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;// AQUI
-
+    private Integer id;
     private String name;
     private Integer version;
 }
