@@ -8,20 +8,15 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.eclipse.microprofile.config.Config;
-import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
 
 //URL  http://localhost:8080/api/authors
 @Path("/authors")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @ApplicationScoped
-
 public class AuthorRest {
 
     @Inject
@@ -30,9 +25,6 @@ public class AuthorRest {
 
     @Inject
     AuthorRepository authorRepository;
-
-
-    AtomicInteger index = new AtomicInteger(1);
 
     @GET
     @Path("/{id}")
@@ -46,11 +38,9 @@ public class AuthorRest {
         return Response.ok(obj.get()).build();
     }
 
-
     // http://localhost:8080/api/authors
     @GET
     public List<Author> findAll() {
-        int valor = index.getAndIncrement();
         return authorRepository.listAll();
     }
 
@@ -58,21 +48,6 @@ public class AuthorRest {
     @GET
     @Path("/find/{isbn}")
     public List<Author> findByBook(@PathParam("isbn") String isbn) {
-
-//        Config config = ConfigProvider.getConfig();
-//        var puerto = config.getValue("quarkus.http.port", Integer.class);
-
-        //generar errores
-        int valor = index.getAndIncrement();
-
-        Config config = ConfigProvider.getConfig();
-        config.getConfigSources()
-                .forEach(
-                        obj ->
-                                System.out.printf("%d -> %s\n", obj.getOrdinal(), obj.getName())
-
-                );
-
         var ret = authorRepository.findByBook(isbn);
         return ret.stream()
                 .map(obj -> {
@@ -81,7 +56,6 @@ public class AuthorRest {
                     return obj;
                 }).toList();
     }
-
 
     @POST
     // http://localhost:8080/api/authors
@@ -126,7 +100,7 @@ public class AuthorRest {
 
         try {
             authorRepository.delete(author.get());
-            return Response.status(Response.Status.NO_CONTENT).build();
+            return Response.ok().build();
         } catch (Exception e) {
             return Response.status(Response.Status.CONFLICT).build();
         }

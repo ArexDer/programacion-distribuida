@@ -20,8 +20,8 @@ public class BookDto {
     private String isbn;
     private String title;
     private BigDecimal price;
-    private Integer inventorySold;
-    private Integer supplier;
+//    private Integer inventorySold;
+//    private Integer supplier;
 
     private List<String> authors;
 }

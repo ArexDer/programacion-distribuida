@@ -5,36 +5,22 @@ import com.programacion.distribuida.book.db.Book;
 import com.programacion.distribuida.book.repo.BooksRepository;
 import com.programacion.distribuida.book.service.dto.AuthorDto;
 import com.programacion.distribuida.book.service.dto.BookDto;
-import com.programacion.distribuida.book.service.dto.MapperService;
-import io.smallrye.mutiny.Multi;
-import io.smallrye.mutiny.Uni;
-import io.smallrye.stork.Stork;
-import io.smallrye.stork.api.Service;
-import io.smallrye.stork.api.ServiceInstance;
-import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.modelmapper.ModelMapper;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 
 @Path("/books")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @ApplicationScoped
-@Transactional
 public class BookRest {
 
     @Inject
@@ -51,81 +37,47 @@ public class BookRest {
     @GET
     @Path("/{isbn}")
     public Response findByIsbn(@PathParam("isbn") String isbn) {
-        var stork = Stork.getInstance();
+        // Usar método personalizado del repositorio
+        var obj = booksRepository.findByIsbnBook(isbn);
 
-        //--listar servicios
-        Map<String, Service> services = stork.getServices();
-
-        services.entrySet()
-                .stream()
-                .forEach(it -> {
-                    System.out.println(it.getKey());
-
-                    Multi<ServiceInstance> instances = it.getValue()
-                            .getInstances()
-                            .onItem()
-                            .transformToMulti(items -> Multi.createFrom().iterable(items));
-
-                    instances.subscribe()
-                            .with(item->{
-                                System.out.println("  " + item.getHost() + ":" + item.getPort());
-                            });
-                });
-
-        //--seleccionar una instancia
-        Service service = stork.getService("authors-api");
-        Uni<ServiceInstance> instance = service.selectInstance();
-        instance
-                .subscribe()
-                .with(inst -> {
-                    System.out.println("**Instancia seleccionada: " + inst.getHost() + ":" + inst.getPort());
-                });
+        if (obj.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
 
         BookDto ret = new BookDto();
-
-        //1. buscar el libro
-        var obj = booksRepository.findByIdOptional(isbn);
-        if (obj.isEmpty()) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .build();
-        }
         mapper.map(obj.get(), ret);
 
-        var authors = client.findByIsbn(isbn)
-                .stream()
-                .map(AuthorDto::getName)
-                .toList();
+        try {
+            var authors = client.findByIsbn(isbn)
+                    .stream()
+                    .map(AuthorDto::getName)
+                    .toList();
+            ret.setAuthors(authors);
+        } catch (Exception e) {
+            ret.setAuthors(Collections.emptyList());
+        }
 
-        ret.setAuthors(authors);
-
-        return Response.ok(ret)
-                .build();
+        return Response.ok(ret).build();
     }
 
-    //GET - Listar todos los libros
-    // http://localhost:8080/api/books
+    //GET - Listar todos los libros (SIN @Transactional)
+    //GET - Listar todos los libros (Versión simplificada)
     @GET
     public List<BookDto> findAll() {
         return booksRepository.streamAll()
                 .map(book -> {
                     var dto = new BookDto();
                     mapper.map(book, dto);
+                    // No cargar autores en listado general para evitar bloqueos
+                    dto.setAuthors(Collections.emptyList());
                     return dto;
-                })
-                .map(book -> { //AQUI se conecta con el app-authors
-                    var authors = client.findByIsbn(book.getIsbn())
-                            .stream()
-                            .map(AuthorDto::getName)
-                            .toList();
-
-                    book.setAuthors(authors);
-                    return book;
                 })
                 .toList();
     }
 
     //POST - Crear nuevo libro
     @POST
+    @Transactional
     public Response insert(Book book) {
         booksRepository.persist(book);
         return Response.status(Response.Status.CREATED).build();
@@ -134,6 +86,7 @@ public class BookRest {
     //PUT - Actualizar libro existente
     @PUT
     @Path("/{isbn}")
+    @Transactional
     public Response update(@PathParam("isbn") String isbn, Book book) {
         var existingBook = booksRepository.findByIdOptional(isbn);
         if (existingBook.isEmpty()) {
@@ -148,13 +101,24 @@ public class BookRest {
     //DELETE - Eliminar libro
     @DELETE
     @Path("/{isbn}")
+    @Transactional
     public Response delete(@PathParam("isbn") String isbn) {
-        var book = booksRepository.findByIdOptional(isbn);
-        if (book.isEmpty()) {
+        if (!booksRepository.findByIdOptional(isbn).isPresent()) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        booksRepository.deleteById(isbn);
-        return Response.noContent().build();
+        try {
+            // Eliminar dependencias en orden correcto
+            booksRepository.deleteLineItemsByIsbn(isbn);
+            booksRepository.deleteBookAuthorsById(isbn);
+            booksRepository.deleteInventoryByIsbn(isbn);
+
+            // Finalmente eliminar el libro
+            booksRepository.deleteById(isbn);
+
+            return Response.ok().build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.CONFLICT).build();
+        }
     }
 }

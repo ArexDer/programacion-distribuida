@@ -65,8 +65,8 @@ public class AuthorsLifeCicle {
         );
 
         var checkOptions = new CheckOptions()
-                 //.setHttp("http://127.0.0.1:8080/ping")
-                .setHttp(String.format("http://%s:%s/api/ping",ipAddress.getHostAddress(),appPort))
+                 //.setHttp("http://127.0.0.1:7070/api/ping")
+                .setHttp(String.format("http://127.0.0.1:7070/api/ping",ipAddress.getHostAddress(),appPort))
                 .setInterval("10s")
                 .setDeregisterAfter("20s");
 

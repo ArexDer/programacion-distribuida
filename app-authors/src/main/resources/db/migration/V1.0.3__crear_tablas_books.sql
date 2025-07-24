@@ -7,11 +7,6 @@ CREATE TABLE books
     CONSTRAINT pk_books PRIMARY KEY (isbn)
 );
 
-insert into books (isbn, title, price, version) values('1111', 'libro1', 10.00, 1);
-insert into books (isbn, title, price, version) values('2222', 'libro2', 20.00, 1);
-insert into books (isbn, title, price, version) values('3333', 'libro3', 30.00, 1);
-insert into books (isbn, title, price, version) values('4444', 'libro4', 40.00, 1);
-
 CREATE TABLE inventory
 (
     isbn     VARCHAR(255) NOT NULL,

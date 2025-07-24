@@ -8,6 +8,6 @@ public class PingRet {
 
     @GET
     public String ping() {
-        return "pong AUTHORS";
+        return "pong AUTHORS en Quarkus";
     }
 }
